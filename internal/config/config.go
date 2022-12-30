@@ -11,13 +11,13 @@ import (
 var C *Config
 
 type Config struct {
-	Logger     Logger      `yaml:"logger"`
-	HTTPServer HTTPServer  `yaml:"http_server"`
-	Database   SQLDatabase `yaml:"database"`
+	Logger     Logger      `mapstructure:"logger"`
+	HTTPServer HTTPServer  `mapstructure:"http_server"`
+	Database   SQLDatabase `mapstructure:"database"`
 }
 
 type Logger struct {
-	Level string `yaml:"level"`
+	Level string `mapstructure:"level"`
 }
 
 func (c *Config) String() string {
@@ -25,45 +25,41 @@ func (c *Config) String() string {
 }
 
 type HTTPServer struct {
-	Address           string        `yaml:"address"`
-	Port              int           `yaml:"port"`
-	Listen            string        `yaml:"listen"`
-	ReadTimeout       time.Duration `yaml:"read_Timeout"`
-	WriteTimeout      time.Duration `yaml:"write_timeout"`
-	ReadHeaderTimeout time.Duration `yaml:"read_header_timeout"`
-	IdleTimeout       time.Duration `yaml:"idle_timeout"`
+	Listen            string        `mapstructure:"listen"`
+	ReadTimeout       time.Duration `mapstructure:"read_Timeout"`
+	WriteTimeout      time.Duration `mapstructure:"write_timeout"`
+	ReadHeaderTimeout time.Duration `mapstructure:"read_header_timeout"`
+	IdleTimeout       time.Duration `mapstructure:"idle_timeout"`
 }
 
 func (i HTTPServer) String() string {
-	// return fmt.Sprintf("Listen to: %s", i.Listen)
-	return fmt.Sprintf("Listen to: %s", fmt.Sprintf("%s:%d", i.Address, i.Port))
+	return fmt.Sprintf("Listen to: %s", i.Listen)
 }
 
 type SQLDatabase struct {
-	Driver        string        `yaml:"driver"`
-	Host          string        `yaml:"host"`
-	Port          int           `yaml:"port"`
-	DB            string        `yaml:"db"`
-	User          string        `yaml:"user"`
-	Password      string        `yaml:"password"`
-	TimeZone      string        `yaml:"time_zone"`
-	MaxConn       int           `yaml:"max_conn"`
-	IdleConn      int           `yaml:"idle_conn"`
-	Timeout       time.Duration `yaml:"timeout"`
-	DialRetry     int           `yaml:"dial_retry"`
-	DialTimeout   time.Duration `yaml:"dial_timeout"`
-	ReadTimeout   time.Duration `yaml:"read_timeout"`
-	WriteTimeout  time.Duration `yaml:"write_timeout"`
-	UpdateTimeout time.Duration `yaml:"update_timeout"`
-	DeleteTimeout time.Duration `yaml:"delete_timeout"`
-	QueryTimeout  time.Duration `yaml:"query_timeout"`
+	Driver        string        `mapstructure:"driver"`
+	Host          string        `mapstructure:"host"`
+	Port          int           `mapstructure:"port"`
+	DB            string        `mapstructure:"db"`
+	User          string        `mapstructure:"user"`
+	Password      string        `mapstructure:"password"`
+	TimeZone      string        `mapstructure:"time_zone"`
+	MaxConn       int           `mapstructure:"max_conn"`
+	IdleConn      int           `mapstructure:"idle_conn"`
+	Timeout       time.Duration `mapstructure:"timeout"`
+	DialRetry     int           `mapstructure:"dial_retry"`
+	DialTimeout   time.Duration `mapstructure:"dial_timeout"`
+	ReadTimeout   time.Duration `mapstructure:"read_timeout"`
+	WriteTimeout  time.Duration `mapstructure:"write_timeout"`
+	UpdateTimeout time.Duration `mapstructure:"update_timeout"`
+	DeleteTimeout time.Duration `mapstructure:"delete_timeout"`
+	QueryTimeout  time.Duration `mapstructure:"query_timeout"`
 }
 
 func (d SQLDatabase) DSN() (dsn string) {
 	switch d.Driver {
 	case "postgres":
-		// dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=%s", d.Host, d.User, d.Password, d.DB, d.Port, d.TimeZone)
-		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", d.Host, d.User, d.Password, d.DB, d.Port)
+		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=%s", d.Host, d.User, d.Password, d.DB, d.Port, d.TimeZone)
 	default:
 		log.Fatalf("SQLDatabase driver is not supported: %s", d.Driver)
 	}
@@ -75,8 +71,7 @@ func (d SQLDatabase) DSN() (dsn string) {
 func (d SQLDatabase) String() (str string) {
 	switch d.Driver {
 	case "postgres":
-		// str = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=%s", d.Host, d.User, d.Password, d.DB, d.Port, d.TimeZone)
-		str = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", d.Host, d.User, d.Password, d.DB, d.Port)
+		str = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=%s", d.Host, d.User, d.Password, d.DB, d.Port, d.TimeZone)
 	default:
 		log.Fatalf("SQLDatabase driver is not supported: %s", d.Driver)
 	}

@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -41,8 +40,7 @@ func (s *server) Serve(app *app.Application) *server {
 
 	// Starting the server
 	go func() {
-		// if err := s.e.Start(config.C.HTTPServer.Listen); err != nil && err != http.ErrServerClosed {
-		if err := s.e.Start(fmt.Sprintf("%s:%d", config.C.HTTPServer.Address, config.C.HTTPServer.Port)); err != nil && err != http.ErrServerClosed {
+		if err := s.e.Start(config.C.HTTPServer.Listen); err != nil && err != http.ErrServerClosed {
 			s.e.Logger.Fatal("shutting down the server")
 		}
 	}()
