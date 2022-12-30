@@ -1,0 +1,12 @@
+logger:
+  level: "info"
+http_server:
+  listen: ":8080"
+database:
+  driver: "postgres"
+  db: "hetab"
+  user: "ali"
+  password: "a1234567"
+  host: "postgres"
+  port: "5432"
+  time_zone: "Asia/Tehran"
